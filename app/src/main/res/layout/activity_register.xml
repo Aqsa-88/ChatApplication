@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:gravity="center"
+    android:background="@color/lightWhite"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Message.Register">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/r_profileImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/chatapp"
+        android:layout_gravity="center"
+        android:contentDescription="Profile Picture"
+        android:clickable="true"
+        android:focusable="true"/>
+
+
+    <TextView
+        android:textColor="@color/purple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Register Here"
+        />
+    <EditText
+        android:id="@+id/r_name"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Name"
+        android:textColorHint="@color/purple"
+        android:textColor="@color/purple"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/round_back_white_10"
+
+        />
+    <EditText
+        android:id="@+id/r_mobile"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:textColor="@color/purple"
+        android:textColorHint="@color/purple"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Mobile Number"
+        android:inputType="number"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/round_back_white_10"
+
+        />
+    <EditText
+        android:id="@+id/r_email"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:autofillHints=""
+        android:textColorHint="@color/purple"
+        android:textColor="@color/purple"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/round_back_white_10"
+
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/r_registerBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:textStyle="bold"
+        android:text="Register Now"
+        android:textColor="@color/white"
+        android:background="@drawable/round_back_theme_1000"
+        />
+</LinearLayout>

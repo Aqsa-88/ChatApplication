@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_main"
+    android:gravity="center"
+    android:background="@color/lightWhite"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Message.LoginActivity">
+
+    <!-- Lottie Animation -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/splashAnimation"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:lottie_rawRes="@raw/loginanimi"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:textColor="@color/purple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Login Here"
+        />
+    <EditText
+        android:id="@+id/l_name"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Name"
+        android:textColorHint="@color/purple"
+        android:textColor="@color/purple"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/round_back_white_10"
+
+        />
+    <EditText
+        android:id="@+id/l_mobile"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:textColor="@color/purple"
+        android:textColorHint="@color/purple"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Mobile Number"
+        android:inputType="number"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/round_back_white_10"
+
+        />
+    <EditText
+        android:id="@+id/l_email"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:autofillHints=""
+        android:textColorHint="@color/purple"
+        android:textColor="@color/purple"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
+        android:background="@drawable/round_back_white_10"
+
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/l_loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/round_back_theme_1000"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/l_r_register"
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="50dp"
+        android:text="Don't have an account? Register Now"
+        android:textColor="@color/purple"
+
+        />
+</LinearLayout>

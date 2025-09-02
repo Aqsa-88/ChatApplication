@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110dp">
+
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/oppoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="50dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <!-- Message Text -->
+            <TextView
+                android:id="@+id/oppoMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/opo_msg_back"
+                android:padding="20dp"
+                android:text="This is a Demo Message"
+                android:textColor="@color/lightWhite" />
+
+            <!-- Time Stamp -->
+            <TextView
+
+                android:id="@+id/oppoMsgTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="10-08-2025 05:15 AM"
+                android:textColor="@color/purple"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_alignParentEnd="true"
+            android:id="@+id/myLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="53dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+
+            >
+
+            <!-- Message Text -->
+
+            <!-- Time Stamp -->
+
+            <TextView
+                android:id="@+id/myMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="250dp"
+                android:background="@drawable/my_msg_back"
+                android:padding="20dp"
+                android:text="This is a Demo Message"
+                android:textColor="@color/lightWhite" />
+
+            <TextView
+                android:id="@+id/myMsgTime"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="10-08-2025 05:15 AM"
+                android:textColor="@color/purple"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
