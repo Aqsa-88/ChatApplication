@@ -10,5 +10,6 @@ class ChatList(
     var message: String,  // Chat message
     var date: String,     // Message bhejne ki date
     var time: String,    // Message bhejne ka time
-    var unseenCount: Int = 0
+    var unseenCount: Int = 0,
+    val seen: Boolean = false
 )

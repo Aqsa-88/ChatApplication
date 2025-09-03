@@ -6,6 +6,7 @@ import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import android.app.ProgressDialog
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,6 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var progressDialog: ProgressDialog
     private lateinit var messagesAdapter: MessagesAdapter
+
+    private val PICK_IMAGE_REQUEST = 2001
 
     private fun showPopup(message: String, imageRes: Int) {
         val dialogView = layoutInflater.inflate(R.layout.popup_dialog, null)
@@ -72,15 +76,12 @@ class MainActivity : AppCompatActivity() {
                 .setMessage("Are you sure you want to logout?")
                 .setPositiveButton("Yes") { dialog, _ ->
 
-                    // 🔹 Local session clear
                     val prefs = getSharedPreferences("MemoryData", MODE_PRIVATE)
                     prefs.edit().clear().apply()
                     MemoryData.clearUserMobile(this)
 
-                    // 🔹 Show success popup
                     showPopup("Logged out successfully", R.drawable.logout)
 
-                    // 🔹 Navigate to login after delay
                     Handler(Looper.getMainLooper()).postDelayed({
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
         println("Mobile: $mobile, Email: $email, Name: $name")
 
-        // Load current user profile picture
+        // 🔹 Load current user profile picture
         mobile?.let { mob ->
             databaseReference.child("users").child(mob)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -128,6 +129,8 @@ class MainActivity : AppCompatActivity() {
                             Picasso.get().load(profilePictureUrl)
                                 .placeholder(R.drawable.chatapp)
                                 .into(userProfilePicture)
+                        } else {
+                            userProfilePicture.setImageResource(R.drawable.chatapp) // default
                         }
                         progressDialog.dismiss()
                     }
@@ -138,8 +141,14 @@ class MainActivity : AppCompatActivity() {
                 })
         } ?: run { progressDialog.dismiss() }
 
+        // 🔹 Click on profile picture to upload new one
+        userProfilePicture.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        }
 
-        // Fetch all users for chat list
+        // 🔹 Fetch all users for chat list
         databaseReference.child("users")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -156,29 +165,26 @@ class MainActivity : AppCompatActivity() {
                             val chatKey =
                                 if (mobile!! < getMobile) "$mobile-$getMobile" else "$getMobile-$mobile"
                             if (unreadCount < 0) unreadCount = 0
-                            // Check last message & unseen count
+
                             databaseReference.child("chat").child(chatKey).child("messages")
-                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                .addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(snapshot: DataSnapshot) {
+                                        var lastMessage = ""
+                                        var unreadCount = 0
+
                                         for (msgData in snapshot.children) {
-                                            val msg =
-                                                msgData.child("msg").getValue(String::class.java)
-                                                    ?: ""
-                                            val sender =
-                                                msgData.child("sender").getValue(String::class.java)
-                                                    ?: ""
-                                            val seen =
-                                                msgData.child("seen").getValue(Boolean::class.java)
-                                                    ?: false
+                                            val msg = msgData.child("msg").getValue(String::class.java) ?: ""
+                                            val sender = msgData.child("sender").getValue(String::class.java) ?: ""
+                                            val seen = msgData.child("seen").getValue(Boolean::class.java) ?: false
+
                                             if (msg.isNotEmpty()) {
                                                 lastMessage = msg
                                             }
-                                            // 🔹 Count only unseen messages
                                             if (!seen && sender != mobile) {
                                                 unreadCount++
                                             }
                                         }
-                                        if (unreadCount < 0) unreadCount = 0
+
                                         val messageList = MessagesList(
                                             name = getName ?: "Unknown",
                                             mobile = getMobile,
@@ -187,8 +193,15 @@ class MainActivity : AppCompatActivity() {
                                             unseenMessage = unreadCount,
                                             chatKey = chatKey
                                         )
-                                        messageLists.add(messageList)
-                                        messagesAdapter.updateData(messageLists)
+
+                                        val index = messageLists.indexOfFirst { it.mobile == getMobile }
+                                        if (index != -1) {
+                                            messageLists[index] = messageList
+                                        } else {
+                                            messageLists.add(messageList)
+                                        }
+
+                                        messagesAdapter.updateData(ArrayList(messageLists))
                                     }
 
                                     override fun onCancelled(error: DatabaseError) {}
@@ -200,7 +213,49 @@ class MainActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {}
             })
     }
+
+    // 🔹 Handle image picker result
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            val imageUri: Uri? = data.data
+            if (imageUri != null && mobile != null) {
+                val storageRef = FirebaseStorage.getInstance()
+                    .reference.child("profile_images/${mobile}.jpg")
+
+                val pd = ProgressDialog(this)
+                pd.setMessage("Uploading...")
+                pd.setCancelable(false)
+                pd.show()
+
+                val uploadTask = storageRef.putFile(imageUri)
+                uploadTask.addOnSuccessListener {
+                    storageRef.downloadUrl.addOnSuccessListener { uri ->
+                        val imageUrl = uri.toString()
+
+                        // Update Firebase DB
+                        databaseReference.child("users").child(mobile!!)
+                            .child("profile_picture")
+                            .setValue(imageUrl)
+
+                        // Update UI
+                        Picasso.get().load(imageUrl)
+                            .placeholder(R.drawable.chatapp)
+                            .into(userProfilePicture)
+
+                        pd.dismiss()
+                        showPopup("Profile Updated", R.drawable.chatapp)
+                    }
+                }.addOnFailureListener {
+                    pd.dismiss()
+                    showPopup("Upload Failed", R.raw.error)
+                }
+            }
+        }
+    }
 }
+
 
 
 

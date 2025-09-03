@@ -1,12 +1,14 @@
 package com.example.mychatapplication.Message.chat
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mychatapplication.Message.MemoryData
 import com.example.mychatapplication.R
 
 class ChatAdapter(
@@ -23,20 +25,35 @@ class ChatAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val chat = chatLists[position]
-        val senderMobile = chat.mobile.trim()
+        val senderMobile = chat.mobile.trim().lowercase()
+        val currentUserMobile = MemoryData.getUserMobile(context).trim().lowercase()
+
+
+        Log.d("ChatAdapter", "sender: $senderMobile | current: $currentUserMobile")
+
+        // Reset dono layouts invisible karke start karo
+        holder.myLayout.visibility = View.GONE
+        holder.oppoLayout.visibility = View.GONE
 
         if (senderMobile == currentUserMobile) {
-            // Sent message
+            // Sent message (Right Side)
             holder.myLayout.visibility = View.VISIBLE
-            holder.oppoLayout.visibility = View.GONE
-            holder.myMessage.text = chat.message
+            holder.myMessage.text = chat.message ?: ""
             holder.myTime.text = "${chat.date} ${chat.time}"
             holder.myMessage.setBackgroundResource(R.drawable.my_msg_back)
+            holder.mySeenStatus.visibility = View.GONE
+            // ✅ Seen status show karo
+            if (chat.seen) {
+                holder.mySeenStatus.visibility = View.VISIBLE
+                holder.mySeenStatus.text = "✓✓ Seen"
+            } else {
+                holder.mySeenStatus.visibility = View.VISIBLE
+                holder.mySeenStatus.text = "✓ Sent"
+            }
         } else {
-            // Received message
-            holder.myLayout.visibility = View.GONE
+            // Received message (Left Side)
             holder.oppoLayout.visibility = View.VISIBLE
-            holder.oppoMessage.text = chat.message
+            holder.oppoMessage.text = chat.message ?: ""
             holder.oppoTime.text = "${chat.date} ${chat.time}"
             holder.oppoMessage.setBackgroundResource(R.drawable.opo_msg_back)
         }
@@ -58,6 +75,7 @@ class ChatAdapter(
 
         val myMessage: TextView = itemView.findViewById(R.id.myMessage)
         val myTime: TextView = itemView.findViewById(R.id.myMsgTime)
+        val mySeenStatus: TextView = itemView.findViewById(R.id.mySeenStatus)
     }
 }
 

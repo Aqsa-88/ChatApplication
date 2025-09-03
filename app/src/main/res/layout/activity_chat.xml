@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/chat_main"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:paddingTop="20dp"
     android:background="@color/lightWhite"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".Message.chat.Chat"
+    android:layout_height="match_parent"
+    android:windowSoftInputMode="adjustResize"
     android:screenOrientation="portrait"
-    android:windowSoftInputMode="adjustResize|stateHidden"
-    >
+    tools:context=".Message.chat.Chat">
 
     <!-- Top Bar -->
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
+        android:padding="4dp"
         android:background="@color/lightWhite">
 
         <ImageView
@@ -30,19 +27,18 @@
             android:layout_height="35dp"
             android:background="@drawable/round_back_light_10"
             android:paddingStart="12dp"
-            android:paddingEnd="2dp"
+            android:src="@drawable/outline_chevron_backward_24"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/outline_chevron_backward_24" />
+            android:layout_marginStart="10dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profilePicture"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_toEndOf="@id/backBtn"
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
-            android:src="@drawable/chatapp"
-            android:layout_toEndOf="@id/backBtn" />
+            android:src="@drawable/chatapp" />
 
         <LinearLayout
             android:layout_toEndOf="@id/profilePicture"
@@ -78,23 +74,18 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chattingRecycleView"
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_below="@id/topBar"
-        android:layout_above="@id/bottomBar"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
         android:padding="4dp"/>
 
-
     <!-- Bottom Bar -->
     <LinearLayout
-
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_weight="1"
         android:background="@color/purple"
-        android:layout_alignParentBottom="true"
         android:padding="10dp">
 
         <RelativeLayout
@@ -104,16 +95,14 @@
             android:padding="10dp">
 
             <EditText
-                android:inputType="text"
                 android:id="@+id/messageEditTxt"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:maxWidth="250dp"
                 android:textColor="@color/purple"
-                android:layout_toStartOf="@id/sendBtn"
                 android:background="@drawable/round_background_messagenav_100"
                 android:textSize="18sp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="40dp"
                 android:hint="Type something..."
                 android:imeOptions="actionSend"
                 android:singleLine="true"/>
@@ -127,4 +116,4 @@
                 android:layout_centerVertical="true" />
         </RelativeLayout>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

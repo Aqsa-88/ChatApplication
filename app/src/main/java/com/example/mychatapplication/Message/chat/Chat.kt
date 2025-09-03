@@ -117,7 +117,8 @@ class Chat : AppCompatActivity() {
                                     message = msg,
                                     date = date,
                                     time = time,
-                                    unseenCount = unseenCount
+                                    unseenCount = unseenCount,
+                                    seen = seen
                                 )
                             )
                         }
